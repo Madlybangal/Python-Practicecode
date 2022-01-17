@@ -1,0 +1,71 @@
+#For more information see: https://www.nltk.org/data.html
+#Term Frequency - How frequently a  term occurs in a text. It is measured as the number of 
+times a term t appears in text/Total number of words in a document
+#Inverse document frequency-How important the word is in a document. It is measured as
+log(total no of sentences/No of sentences with term t)
+#TF-IDF Word's importance is measured by this score. It's measured by TF*IDF
+#Lob base e operation
+
+
+import nltk
+#nltk.download('stopwords')
+from nltk import tokenize
+from nltk.corpus import stopwords
+#nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+from operator import itemgetter
+import math
+#Declare variables
+doc='I am a graduate.I want to learn Python.I like learning Python.Python is easy.Python is interesting.Learning invreases thinking.Everyone should invest time in learning'
+#Stopwords are frequently occuring words that may not carry significance to our analysis
+stop_words=set(stopwords.words('english'))
+#Find total words in a document
+total_words=doc.split()
+total_word_length=len(total_words)
+#Find total number of sentences
+total_sentences=tokenize.sent_tokenize(doc)
+total_sent_len=len(total_sentences)
+
+#Calculate TF for each  word
+tf_score ={}
+
+#print("total_ words : ", total_words)
+#print("stop words : ",stop_words)
+for each_word in total_words:
+	each_word=each_word.replace('.','')
+	if each_word not in  stop_words:
+		if each_word in tf_score:
+			tf_score[each_word]+=1
+		else
+			tf_score[each_word]=1
+
+#Dividing by total_word_length for each dictionary element
+tf_score.update((x,y/int(total_word_length)) for x, y in tf_score.items())
+#print(tf_score)
+#Function to check  if the word is present in a word list
+def check_sent(word, sentences):
+	final=[all(w in  for w in word]) for x in senetences]
+	sent_len=[sentences[i] for i in range(0, len(final)) if final[i]]
+	return int(len(sent_len)
+#Calculate IDF for each word
+idf_score ={}
+for each_word in total_words:
+	each_word=each_word.replace('.','')
+	if each_word not in stop_words:
+		if each_word in idf_score:
+			idf_score[each_word]=check_sent(each_word, total_senetences)
+		else:
+			idf_score[each_word]=1
+#Performing a log and divide
+idf_score.update((x,math.log(int(total_sent_len)/y)) for x, y in idf_score.items())				
+
+#print(idf_score)
+#Calculate TF*IDF
+tf_idf_score={key:tf_score[key] * idf_score.get(key,0) for key in tf_score.keys()}
+#print(tf_idf_score)
+#Create a function to get N important words in the document
+def get_top_n(dict_elem,n):
+	result=dict(sorted(dict_elem.items(),key=itemgetter(1),reverse=True)[:n])
+	return result
+#get top 10 words of significance
+print(get_top_n(tf_idf_score,10))
