@@ -1,0 +1,26 @@
+from pytube import YouTube
+from openpyxl.workbook import workbook
+from openpyxl import load_workbook
+import os
+os.chdir(r"C:\X\Y\Z")
+wb=load_workbook("Youtubedownloader.xlsx")
+ws=wb["Sheet1"]
+video_url=ws["C2"].value
+yt_obj=YouTube(video_url)
+#Progressive download is a technique used to stream media from a web server to a client such as a video player on a laptop or mobile phone.
+#Without progressive download, a client has to download the entire media file before video playback can start.
+#There are two major problems with progressive streaming.
+#The first is quality. Avideo that is only 1280 X 720 will never play at correct quality level on a screen that is 1920 X 1080 px.
+#It will be stretched and you'll sea pixealation.
+#The second is buffering. If the user has a low quality internet connection and cannot download video streamfast enough, video will
+#need to pause, wait for more data and start again. This is very common, especially on mobile devices, where the connection can vary
+#greatly depending on user's location.
+#Adaptive bitrate streaming(aka adaptive streaming) is a technology designed to deliver video in the most efficient way possible.
+#and in the highest usable quality for each specified user and device.
+#For example, if a small video can be downloaded faster than a large video and user has a slow internet connection, an adaptive video stream7
+#will switch to smaller video file sizes to keep video playing
+mp4files=yt_obj.streams.filter(file_Extension='mp4')
+print("Downloading to start")
+stream=yt_obj.streams.get-highest_resolution()
+stream.download()
+print("Downloaded successfully")
