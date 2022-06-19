@@ -1,0 +1,54 @@
+import datetime
+DAYS=("Sun","Mod","Tue","Wed","Thu","Fri","Sat")
+MONTHS=("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov""Dec")
+
+
+while True:
+	print("Please enetr year for your calender: ")
+	response=input(">")
+	if response.isdecimal() and int(response)>0:
+		year=int(response)
+		break
+	print("Please enter a numeric year like 2021...")
+	continue
+while True:
+	print("Please enter month for your calendar:1-12")
+	response=input(">")
+	if response.isdecimal() and (1<=int(response)<=12):
+		month=int(response)
+		break
+
+	print("Please enter a numeric month like 3...")
+	continue
+
+def getCalendar(year,month):
+	callText=''
+	callText+=(' '*34)+MONTHS[month-1]+' '+str(year) +'\n'
+	callText+='......Sun......Mon......Tue......Wed......Thu......Fri......Sat'
+	weekSeparator='\n'
+	blankrow=('|           '*7)+'\n'
+	currentDate=datetime.date(year,month,1)
+#Roll back currentdate until it is Sunday
+	while currentDate.weekday()!=6:
+		currentDate-=datetime.timedelta(days=1)
+	while True:
+		callText+=weekSeparator
+		dayNoRow=''
+		for i in range(7):
+			dayNoLabel=str(currentDate.day).rjust(2)
+			dayNoRow='|'+dayNoLabel+(' '*9)
+			currentDate+=datetime.timedelta(days=1)
+		dayNoRow+='\n'
+		callText+=dayNoRow
+		for i in range(3):
+			callText+=blankRow
+		if(currentDate.month!=month):
+			break
+	callText+=weekSeparator
+	return callText
+	
+callText=getCalendarfor(year,month)
+print(callText)
+	
+
+
