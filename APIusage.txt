@@ -1,0 +1,57 @@
+import datetime
+from urllib import response
+import pandas as pd
+import requests
+yesterday=datetime.date.today()-datetime.timedelta(days=1)
+api="https://earthquake.usgs.gov/fdsnws/event/1/query
+
+#term play load is utilized by programmers to differentiate betweenthe essential information in a chunk of data and
+the information that is used to support it.The term originated from transportation sector, where it refers to the load
+that a person pays for when they transport something.
+#For example, consider a truck is carrying 15 tons of cement. When it passes through weightbridge, it weighs more than 15 tons,
+taking into account the vehicle's weight, the driver and all other things.However, although it transports all these things,the only item customer pays for
+is cement, hence the payload.
+
+#A playload in API is the actual data pack that is sent with GET method in HTTP.It is the crucial information that you submit to the server when you are making an 
+API request.The playload can be sent or received in various formats,including JSON. Usually the playload  is denoted using "{}" in a query string.
+playlod={
+	'format':'geojson',
+	'starttime':yesterday-datetime.timedelta(days=26)
+	'endtime':yesterday
+}
+response=requests.get(api,params=playload,verify=True)
+print(response.status_code)
+#response.json() returns a JSON object of the result(if result is written in JSON format, otherwise error)
+earthquake_json=reponse.json()
+#print(earthquake_json['metadata'])
+data=[quake['properties'] for quake in earthquake_json['features']]
+df=pd.DataFrame(data)
+print(data)
+print("df",df)
+#Lets select all earthquakes in Alaska where we have non-null values for alert column
+alaskadata=df.loc[(df.place.str.contains('Alaska')) & df.alert.notnull()),['alert','mag','magtype','title','tsunami','type']]
+#Lets select all earthwuake in California that have magnitude of atleast 3.8 including both'CA' or 'California'
+cadata=df.loc[(df.place.str.contains(r'CA|California$')) & (df.mag>3.8),['alert','mag','magtype','title','tsunami','type']]
+#get all earthwuake data between magnitudeb 6.5 and 7.5
+print(df.loc[df.mag.between(6.5,7.5),['alert','mag','magtype','title','tsunami','type']])
+#grab earthquake data with red or orange alert
+print(df.loc[df.alert.isin(['green','red']),['alert','mag','magtype','title','tsunami','type']])
+#get earthquake data for highest and lowest magnitude
+print(df.loc[[df.mag.idxmin(),df.mag.idxmax()],['alert','mag','magtype','title','tsunami','type']])
+#create a new column that tells us whether earth quake magnitude is negative or not
+df['mag_negative']=df.mag < 0
+#Replace pattern for place name
+df['parsed_place']=df.place.str.replace(r'.*of ','' #  remove something of something
+).str.replace(r'CA$','California' #fix California
+)
+#create two separate data frames with tsunami and no tsunami
+tsunami=df[df.tsunami==1]
+no_tsunami=df[df.tsunami==0]
+#Combine two data frames
+print(pd.concat([tsunami,no_tsunami],axis=0))
+#when you don't want map_negative column as part of your dataframe
+map_negative=df.pop('map_negative')
+df.columns
+
+
+ 
