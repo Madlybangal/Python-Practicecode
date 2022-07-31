@@ -1,0 +1,39 @@
+#morphological image processing in python
+#it's a preprocessing step for OCR
+
+import numpy as np
+import cv2 as  cv2
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+mpl.rc('axes', labelsize=14)
+mpl.rc('xtick', labelsize=12)
+mpl.rc('ytick', labelsize=12)
+print(plt.get_backend())
+#get_ipython().run_line_magic('matplotlib', 'inline')
+#Routine to fix 
+def fixColor(image):
+    return(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+
+image = cv2.imread('C:\\Users\\703221527\\OneDrive - Genpact\\Desktop\\number_plate.jpg')
+plt.imshow(fixColor(image))
+#In the preprocessing step we will convert the image to grayscale. We will also threshold the image to binarize it 
+# and seperate all pixels to black or white.
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+plt.imshow(fixColor(gray))
+
+ret2,th2 = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+plt.imshow(fixColor(th2))
+#We first create a 3×3 kernel or matrix and then run a convolution over the entire image. 
+# Dilation increases the whitespace, reducing noise or small dark spots in the image. After small dark pixels are eliminated, the bigger numbers
+# are now clearly delineated, but may be smaller.
+kernel = np.ones((3, 3), np.uint8)
+img = cv2.dilate(th2, kernel, iterations=1)
+plt.imshow(fixColor(img))
+#Erosion is the 2nd morphological operation we will see today. We will use the same kernel. Erosion will make the dark letters a little bigger
+# and easier to read.
+img = cv2.erode(img, kernel, iterations=1)
+plt.imshow(fixColor(img))
+#When background is black and fonts are white u need to run erosion first and diallation next
+print("somu")
+
+
