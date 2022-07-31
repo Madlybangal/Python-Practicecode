@@ -34,6 +34,7 @@ plt.imshow(fixColor(img))
 img = cv2.erode(img, kernel, iterations=1)
 plt.imshow(fixColor(img))
 #When background is black and fonts are white u need to run erosion first and diallation next
-print("somu")
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
