@@ -1,0 +1,149 @@
+from timeit import timeit
+import numpy as np
+
+x=np.array([1,2,3,4])
+print(type(x))
+print(x.ndim)
+y=[1,2,3,4]
+
+print(type(y))
+#create 10 dimensional array
+arn=np.array([2,4,5,6],ndmin=10)
+print(arn)
+#create numpy array with default zero array values
+ar_zero=np.zeros(4)
+print(ar_zero)
+
+#create multi dimensional array
+ar_zerom=np.zeros((3,4))
+print(ar_zerom)
+#similar with 1 array values
+
+ar_ones=np.ones(4)
+print(ar_ones)
+
+#create multi dimensional array
+ar_onesm=np.ones((3,4))
+print(ar_onesm)
+
+#creating empty array
+ar_emp=np.empty(4)
+print(ar_emp)
+
+#creating range array
+ar_rn=np.arange(4)
+print(ar_rn)
+
+#create diagonal array
+ar_dia=np.eye(3,3)
+print(ar_dia)
+
+ar_dia1=np.eye(3,5)
+print(ar_dia1)
+# create array with gap
+ar_lin=np.linspace(1,10,num=5)
+print(ar_lin)
+#create random array
+#rand function generates value from 0 to 1
+var=np.random.rand(4)
+print(var)
+#multidimensional random array
+var1=np.random.rand(2,5)
+print(var1)
+#randn function is used to generate random values close to 0. This may return positive or negative no as well
+arr_randn=np.random.randn(5)
+print(arr_randn)
+#ranf function generates random floats with half open interval
+
+#randint function generates random number between a given range
+var4=np.random.randint(5,20,5)
+print(var4)
+#DataTypes
+var=np.array([1,2,3,4])
+print("Data Type: ",var.dtype)
+
+#FloatTypes
+varf=np.array([1.5,2.8,12.9,14.7])
+print("Check Data Type: ",varf.dtype)
+
+#String Types
+vars=np.array(["P","Q","s","T"])
+print("Check Data Type: ",vars.dtype)
+#Mix Data Types
+varm=np.array(["P","Q","s","T",4,10,3,12])
+print("Check Data Type: ",varm.dtype)
+#Data Type conversion
+
+x=np.array([1,2,3,4])
+print("Data type for x: ", x.dtype)
+
+x=np.array([1,2,3,4],dtype=np.int8)
+print("Data type for x: ", x.dtype)
+
+x1=np.array([1,2,3,4],dtype="f")
+print("Data type for x1: ", x1.dtype)
+#Using Datatype as function
+x2=np.array([1,2,3,4])
+newvar=np.float32(x2)
+print("Data type for x2: ", x2.dtype)
+print("x2: ",x2)
+print("Data type for newvar: ", newvar.dtype)
+print("newvar: ",newvar)
+
+#Using astype function
+x3=np.array([2,4,5,6])
+new_1=x3.astype(float)
+print("x3: ",x3)
+print("new_1: ", new_1)
+#Shaping arrays
+var=np.array([[1,2],[3,4]])
+print("var: ",var)
+print("\n")
+print("var ", var.shape)
+#Shape of Multidimensional array
+var1=np.array([1,4,32,3,4],ndmin=4)
+print(var1)
+print(var1.ndim)
+print()
+print(var1.shape)
+#Reshaping Arrays
+var2=np.array([2,4,6,7,3,5])
+print(var2)
+print(var2.ndim)
+y=var2.reshape(3,2)
+print(y)
+print(y.ndim)
+#Reshaping to multidimensional array
+var3=np.array([3,4,5,6,7,8,9,10,11,12,32,21])
+print(var3)
+print(var3.ndim)
+x1=var3.reshape(2,3,2)
+print(x1)
+print(x1.ndim)
+#Converting multi dimensional arry to one dimension array
+one=x1.reshape(-1)
+print(one)
+print(one.ndim)
+#Arithmatic operation
+var=np.array([3,4,5,6,7])
+varadd=var+3
+print(varadd)
+var1=np.array([1,2,3,4])
+var2=np.array([1,2,3,4])
+varAddc=var1+var2
+print(varAddc)
+
+var21=np.array([[1,2,3,4],[2,3,4,5]])
+var22=np.array([[1,2,3,4],[2,3,4,5]])
+varmult=var21*var22
+print("Multiplication ",varmult)
+varmaxmin=np.array([2,3,4,5,8,9,10])
+print("min: ",np.min(varmaxmin),"position min ",np.argmin(varmaxmin))
+print("max: ",np.max(varmaxmin),"Position max ",np.argmax(varmaxmin))
+print("Sqrt: ",np.sqrt(varmaxmin))
+print("Sin value: ",np.sin(varmaxmin))
+print("Cos value: ",np.cos(varmaxmin))
+print("Cumulative sum: ",np.cumsum(varmaxmin))
+var1=np.array([[2,1,3],[9,5,6]])
+print(np.min(var1,axis=0))
+print(np.min(var1,axis=1))
