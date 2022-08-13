@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+df=pd.read_excel("C:/Users/703221527/OneDrive - Genpact/Machine Learning/PandaFiles/SaleData.xlsx")
+#print(df)
+ #Pandas program to create a Pivot table and find the total sale amount region wise, manager wise
+dfpvt=pd.pivot_table(df,index=["Region","Manager"],values='Sale_amt',aggfunc='sum')
+#print("Pivot: ",dfpvt)
+# total sale amount region wise, manager wise, sales man wise
+dfpvt1=pd.pivot_table(df,index=["Region","Manager","SalesMan"],values='Sale_amt',aggfunc='sum')
+#print("Pivot: ",dfpvt1)
+#create a Pivot table and find the item wise unit sold
+dfpvt2=pd.pivot_table(df,index=["Item"],values='Units',aggfunc=np.sum)
+print("Pivot: ",dfpvt2)
+#create a Pivot table and count the manager wise sale and mean value of sale amount
+dfpvt3=pd.pivot_table(df,index=["Manager"],values='Sale_amt',aggfunc=[np.mean,len])
+print("Pivot: ",dfpvt3)
+#reate a Pivot table and find the total sale amount region wise, manager wise, sales man wise where Manager = "Douglas"
+dfpvt4=pd.pivot_table(df,index=["Region","Manager","SalesMan"],values='Sale_amt',aggfunc='sum')
+print(dfpvt4.query('Manager==["Douglas"]'))
+#create a Pivot table and find the region wise Television and Home Theater sold
+dfpvt5=pd.pivot_table(df,index=["Region","Item"],values='Units',aggfunc='sum')
+print(dfpvt5.query('Item==["Television","Home Theatre"]'))
+# create a Pivot table and find the maximum and minimum sale value of the items.
+dfpvt5=pd.pivot_table(df,index=["Item"],values='Sale_amt',aggfunc=['max','min'])
+print(dfpvt5)
+#add column to dataframe
+data = {'Name': ['Jai', 'Princi', 'Gaurav', 'Anuj'],
+        'Height': [5.1, 6.2, 5.1, 5.2],
+        'Qualification': ['Msc', 'MA', 'Msc', 'Msc']}
+
+# Convert the dictionary into DataFrame
+dfPratik = pd.DataFrame(data)
+# Declare a list that is to be converted into a column
+address = ['Delhi', 'Bangalore', 'Chennai', 'Patna']
+# Adding a column
+dfPratik['Address'] = address
+print("dfPratik: \n",dfPratik)
+dfPratik.loc[dfPratik['Address']!='Delhi','Address']='Delhi'
+dfPratik.loc[dfPratik['Address']!='Delhi','Address']='Delhi'
+print("dfPratik: \n",dfPratik)
