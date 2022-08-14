@@ -1,0 +1,30 @@
+emailAddr=input("Enter your Email address: ")#g@g.in
+k,j,d=0,0,0
+if len(emailAddr)>=6:
+    #The isalpha() method returns True if all the characters are alphabet letters (a-z). 
+    if(emailAddr[0].isalpha()):
+        if("@" in emailAddr) and (emailAddr.count("@")==1):
+            if((emailAddr[-4]==".") ^ (emailAddr[-3]==".")):
+                for i in emailAddr:
+                    print("i ",i)
+                    if (i==i.isspace()):
+                        k=1
+                    elif i.isalpha():
+                        if(i==i.upper()):
+                            j=1
+                    elif i.isdigit():
+                        continue 
+                    elif i=="_" or i=="." or i=="@":
+                        continue
+                    else: 
+                        d=1
+                if(k==1) or(j==1) or (d==1):
+                    print("Wrong Email5")
+            else:
+                print("Wrong Email3")
+        else:
+            print("Wrong Email2")
+    else:
+        print("Wrong Email1")        
+else:
+    print("Wrong Email1")
