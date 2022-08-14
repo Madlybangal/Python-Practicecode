@@ -1,0 +1,19 @@
+#EmailValidation with Regex:
+#a-z
+#0-9
+#@ count1
+# . position 2/3 th from right
+import re
+#First space should be a small letter of email address
+#\ in regex help to search character in a string
+#returns true if count of character is 1(true) or in other case 0(false)
+#\w searches special character @ in string
+
+regexemail_condition="^[a-z]+[\_]?[a-z.0-9]+[@]\w+[.]\w{2,3}$"
+emailAddr=input("Enter your Email Id: ")
+if re.search(regexemail_condition,emailAddr):
+    print("Correct Emailid")
+else:
+    print("Incorrect Emailid")
+
+
