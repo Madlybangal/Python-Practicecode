@@ -1,0 +1,51 @@
+from datetime import date
+import pandas as pd
+import numpy as np
+#Find the 95th  percentile of earthquake magnitude in Japan using the magType of 'mb'.
+df=pd.read_csv("C:/Users/703221527/OneDrive - Genpact/Machine Learning/Hands-On-Data-Analysis-with-Pandas-master/ch_02/data/parsed.csv")
+dfJapan=df[(df.parsed_place=='Japan') & (df.magType=='mb')]
+print('95th percentile: ',dfJapan['mag'].quantile(0.95))
+#Find the percentage of earthquakes in Indonesia that were coupled with tsunamis.
+dfIndo=df[(df.parsed_place=='Indonesia') & (df.tsunami==1)].shape[0]
+dfIndo1=df[(df.parsed_place=='Indonesia')].shape[0]
+print("Percentage:  ",str(round(((dfIndo/dfIndo1)*100),2))+'%')
+#alternate
+print(f"""{df[df.parsed_place.str.endswith('Indonesia')].tsunami.value_counts(normalize=True).loc[1,]:.2%}""")
+#Data wrangling
+#Look at data for the Facebook, Apple, Amazon, Netflix, and Google (FAANG) stocks, combine all 
+# separate CSV files 
+# Combine them into a single file and store the dataframe of the FAANG data as faang.csv
+faangdf=pd.DataFrame()
+counter=0
+for files in ['amazon','apple','facebook','google','netflix']:
+    print(f'C:/Users/703221527/OneDrive - Genpact/Machine Learning/Hands-On-Data-Analysis-with-Pandas-master/ch_07/data/{files}.csv')
+    df=pd.read_csv(f'C:/Users/703221527/OneDrive - Genpact/Machine Learning/Hands-On-Data-Analysis-with-Pandas-master/ch_07/data/{files}.csv')
+    df.insert(0,'ticker',files.upper())
+    #print(df)
+    #if(counter==0):
+    #    faangdf=df.copy()
+    #else:
+    faangdf=faangdf.append(df,ignore_index=True)
+    counter=counter+1
+    #print("faangdf: ",faangdf)
+faangdf.to_csv('C:/Users/703221527/OneDrive - Genpact/Desktop/Codes/faang.csv',index=False)
+
+#With faang, use type conversion to change the date column into a datetime and the volume 
+# column into integers. Then, sort by date and ticker
+#Assign new columns to a DataFrame.
+faangdf=faangdf.assign(
+    date=pd.to_datetime(faangdf.date),
+    volume=faangdf.volume.astype(int)
+).sort_values(['date','ticker'])
+
+faangdf.to_csv('C:/Users/703221527/OneDrive - Genpact/Desktop/Codes/faang.csv',index=False)
+#Find the seven rows with the highest value for volume.
+print(faangdf.nlargest(7,'volume'))
+#We need to melt the rest so that we don't have separate columns for open, high, low, close, and
+#volume
+melted_faangdf=faangdf.melt(
+    id_vars=['ticker','date'],
+    value_vars=['open','high','low','close','volume']
+)
+print(melted_faangdf)
+
