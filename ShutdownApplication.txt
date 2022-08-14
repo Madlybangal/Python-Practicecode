@@ -1,0 +1,30 @@
+#Shutdown Application
+from tkinter  import *
+import os
+def restart():
+    os.system('shutdown /r /t 1')
+def restartwithtime():
+    os.system('shutdown /r /t 20')
+def logout():
+    os.system('shutdown -l')
+def shutdown():
+    os.system('shutdown /s /t 1')
+
+sd=Tk()
+
+sd.title("Shut Down App")
+sd.geometry("500x300")
+sd.config(bg="Light Blue")
+btn_ReStart=Button(sd,text="ReStart",font=("Georgia",16,"bold"),relief=RAISED,cursor="plus",command=restart)
+btn_ReStart.place(x=150,y=20,height=30,width=100)
+
+btn_ReStartT=Button(sd,text="ReStart Time",font=("Georgia",16,"bold"),relief=RAISED,cursor="plus",command=restartwithtime)
+btn_ReStartT.place(x=150,y=70,height=30,width=180)
+
+btn_LogOff=Button(sd,text="Log Out",font=("Georgia",16,"bold"),relief=RAISED,cursor="plus",command=logout)
+btn_LogOff.place(x=150,y=120,height=30,width=180)
+
+btn_SD=Button(sd,text="Shut Down",font=("Georgia",16,"bold"),relief=RAISED,cursor="plus",command=shutdown)
+btn_SD.place(x=150,y=170,height=30,width=180)
+
+sd.mainloop()
