@@ -1,0 +1,34 @@
+#Screen recorder
+import cv2
+import pyautogui
+from  win32api import GetSystemMetrics
+import numpy as np
+import time
+
+width=GetSystemMetrics(0)
+height=GetSystemMetrics(1)
+dim=(width,height)
+#Assign video format
+videoFormat=cv2.VideoWriter_fourcc(*'XVID')
+#u can set different location here
+output=cv2.VideoWriter("Somu.avi",videoFormat,30.0,dim)
+start_time=time.time()
+dur=10+4
+end_time=start_time+dur
+while True:
+    #capturing screenshot
+    image=pyautogui.screenshot()
+    
+    # converting the image into numpy array representation
+    frame_1=np.array(image)
+    # converting the BGR image into RGB image
+    frame=cv2.cvtColor(frame_1,cv2.COLOR_BGR2RGB)
+    #writing the RBG image to file
+    output.write(frame)
+    cur_time=time.time()
+    if(cur_time>end_time):
+        break
+output.release()
+print("Recording Ends")
+
+
