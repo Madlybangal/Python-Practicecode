@@ -1,0 +1,35 @@
+#Speed TEst
+from distutils.cmd import Command
+from tkinter  import *
+import speedtest
+def speedchecker():
+    spt=speedtest.Speedtest()
+    spt.get_servers()
+    down=str(round(spt.download()/(10**6),2))+" Mbps"
+    up=str(round(spt.upload()/(10**6),2))+" Mbps"
+    lblDS.config(text=down)
+    lblUS.config(text=up)
+
+
+sp=Tk()
+sp.title("Check Internet Speed")
+sp.geometry("500x220")
+sp.config(bg="Light Blue")
+lblH=Label(sp,text="Internet Speed Test",font=("Georgia",14,"bold"),bg="Light Blue",fg='Maroon')
+lblH.place(x=150,y=10,width=195)
+
+lblD=Label(sp,text="Downloading Speed",font=("Georgia",14,"italic","bold"),bg="Light Blue",fg='white')
+lblD.place(x=8,y=60,width=210)
+
+lblDS=Label(sp,text="00",font=("Georgia",14,"bold"),bg="Light Blue",fg='black')
+lblDS.place(x=210,y=60,width=120)
+
+lblU=Label(sp,text="Uploading Speed",font=("Georgia",14,"italic","bold"),bg="Light Blue",fg='white')
+lblU.place(x=8,y=90,width=170)
+
+lblUS=Label(sp,text="00",font=("Georgia",14,"bold"),bg="Light Blue",fg='black')
+lblUS.place(x=210,y=90,width=120)
+#command=checkspeed()
+btn=Button(sp,text="Check Speed",font=("Georgia",14,"bold"),bg="Light Blue",relief=RAISED,command=speedchecker)
+btn.place(x=360,y=190,width=140)
+sp.mainloop()
