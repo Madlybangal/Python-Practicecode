@@ -25,15 +25,37 @@ for i in num:
     print(val) 
 #A filter function in Python tests a specific user-defined condition for a function and returns an iterable for the elements and values 
 # that satisfy the condition or, in other words, return true."
+#Using the filter function, find the values that are common to the two lists bellow
 #filter(function, iterable)
 a = [1,2,3,4,5,6]
 b = [2,5,0,7,3]
 c= list(filter(lambda x: x in a, b))
 print(c) 
-
+#Considering the range of values below, use the function filter to return only negative numbers.
+val=list(filter((lambda x: x < 0), range(-5,5)))
+print("val: ",val)
 #Reduce functions apply a function to every item of an iterable and gives back a single value as a resultant.
 #reduce(function, iterable)
 from functools import reduce
 list1=[1,2,3,4]
 num=reduce(lambda x,y:x+y,list1)
 print("num  ",num)
+#In a nested list (list of lists), and you want to sum all the items in the first index of the inner lists. 
+# reduce alternative
+from functools import reduce
+
+my_items = [
+    [1, 3],
+    [2, 3, 4],
+    [5, 6]            
+]
+
+result_a = 0
+for item in my_items:
+    
+    result_a += item[1]
+
+print("Result a is", result_a)
+
+result_b = reduce(lambda a, b: (0, a[1] + b[1]), my_items)[1]
+print("Result b is", result_b)
