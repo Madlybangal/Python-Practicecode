@@ -1,0 +1,34 @@
+#Gaussian blur
+import cv2
+import numpy as np 
+img=cv2.imread('C:/Users/703221527/OneDrive - Genpact/Desktop/somu1.jpg',cv2.IMREAD_UNCHANGED)
+#We can access height, width and number of channels from img.shape: Height is at index 0, Width
+# is at index 1; and number of channels at index 2.
+height,width=img.shape[:2]
+# display width and height
+#print("The height of the image is: ", height)
+#print("The width of the image is: ", width)
+if(height>800):
+    scale_percent = 45 # percent of original size
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    # display width and height
+    #print("The height1 of the image is: ", height)
+    #print("The width1 of the image is: ", width)
+    # resize image
+    resized = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)  
+    # apply guassian blur on src image
+    dst = cv2.GaussianBlur(resized,(5,5),cv2.BORDER_DEFAULT)
+    # display input and output image
+    cv2.imshow("Gaussian Smoothing",np.hstack((resized, dst)))
+else:
+    # apply guassian blur on src image
+    dst = cv2.GaussianBlur(img,(5,5),cv2.BORDER_DEFAULT)
+    # display input and output image
+    cv2.imshow("Gaussian Smoothing",np.hstack((img, dst)))
+
+  
+
+cv2.waitKey(0) # waits until a key is pressed
+cv2.destroyAllWindows()
