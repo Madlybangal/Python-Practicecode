@@ -1,0 +1,16 @@
+# importing python package
+import pandas as pd
+import numpy as np
+
+open ('C:/Users/703221527/OneDrive - Somu/Desktop/gfg.csv','w+')
+technologies = {
+    'Courses':["Spark","PySpark","Hadoop","Python"],
+    'Fee' :[22000,25000,np.nan,24000],
+    'Duration':['30day',None,'55days',np.nan],
+    'Discount':[1000,2300,1000,np.nan]
+}
+#converting dictionary to Dataframe
+df = pd.DataFrame(technologies)
+# writing dataframe to csv file
+df.to_csv('C:/Users/703221527/OneDrive - Somu/Desktop/gfg.csv',index=False)
+print('\nModified file:')
