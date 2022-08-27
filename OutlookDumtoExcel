@@ -1,0 +1,54 @@
+#Iterate thro
+from email import header, message
+import win32com.client as wc
+import pandas as pd
+import csv
+# create new pandas DataFrame
+# write  DataFrame to new excel file
+emailitems=[]
+olApp=wc.Dispatch('outlook.application')
+olMAPI=olApp.GetNamespace("MAPI")
+root_folder = olMAPI.Folders.Item(1)
+
+
+
+for folder in root_folder.Folders:
+    
+    if folder.Name=="Imp":
+        
+        if folder.Folders.Count==0:
+            messages=folder.Items
+            for message in messages:
+                
+                if(message.Class==43):
+                    if (message.SenderEmailType=="EX") and  (message.Sender.AddressEntryUsertype!=40):
+                        
+                        #Each AddressEntry object in the AddressEntries object holds information that 
+                        #represents a person, group, or public folder to which the messaging system can deliver 
+                        # messages
+                        if message.Sender.GetExchangeUser() != None:
+                            OHRID= message.Sender.GetExchangeUser().PrimarySmtpAddress
+                            
+                        else:
+                            OHRID= message.Sender.GetExchangeDistributionList().PrimarySmtpAddress
+                            #OHRID=message.Sender.PropertyAccessor.GetProperty(PR_SMTP_ADDRESS)
+                           
+                    else:
+                        OHRID = message.SenderEmailAddress
+                    this_message = (
+                            message.Subject,
+                            OHRID,
+                            message.To,
+                            message.Unread,
+                            message.Senton.date(),
+                            message.body,
+                            message.Attachments.Count
+                        )
+                
+                
+                emailitems.append(this_message)
+
+
+df=pd.DataFrame(emailitems,columns=['Subject','Sender','To','Status','Sent On','Message','AttachmentCount'])
+#df is the input dataframe
+df.to_excel('MailDump.xlsx',index=False)
