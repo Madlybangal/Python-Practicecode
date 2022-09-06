@@ -1,0 +1,10 @@
+#Multiplication function using Map and lamda function
+import pandas as pd
+list_table=[2,3,4,5,6,7,8,10]
+
+def mult_table(list_table):
+    table_dict={}
+    for num in list_table:
+        table_dict[num]= list(map(lambda x,y : x*y ,list(range(1,11)),[num]*10))
+    return pd.DataFrame(table_dict)
+print(mult_table(list_table))
