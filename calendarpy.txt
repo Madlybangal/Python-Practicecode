@@ -1,54 +1,92 @@
+#Calendar
 import datetime
-DAYS=("Sun","Mod","Tue","Wed","Thu","Fri","Sat")
-MONTHS=("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov""Dec")
+Days=("Sun","Mon","Tue","Wed","Thu","Fri","Sat")
+Months=("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec")
 
+# If we write while True then the loop will run forever
+while True:
+    print("Please Enter a Year for calendar: ")
+    responseY=input(">")
+    if (responseY.isdecimal()) and int(responseY)>0:
+        year=int(responseY)
+        break
+    print("Please enter a numeric value for year like 2021")
+    continue
 
 while True:
-	print("Please enetr year for your calender: ")
-	response=input(">")
-	if response.isdecimal() and int(response)>0:
-		year=int(response)
-		break
-	print("Please enter a numeric year like 2021...")
-	continue
-while True:
-	print("Please enter month for your calendar:1-12")
-	response=input(">")
-	if response.isdecimal() and (1<=int(response)<=12):
-		month=int(response)
-		break
+    print("Please enter a month for calendar:1-12")
+    responseM=input(">")
+    if(responseM.isdecimal() and int(responseM)>0):
+        month=int(responseM)
+        break
+    print("Please enter a numeric value for month like 1-12")
 
-	print("Please enter a numeric month like 3...")
-	continue
+def generateClaendar(year, month):
+    currDate=datetime.date(year,month,1)
+    #get Firts three letter of Day Name
+    stday=currDate.strftime('%A')[:3]
+    callText=''
+    callText+=('*'*26)+Months[month-1] +' '+ str(year)+('*'*26)+'\n'
+    callText1='.....Sun.....Mon.....Tue.....Wed.....Thu.....Fri.....Sat.....'
+    callText=callText+callText1
+    stpos=callText1.find(stday)
+    tpos=Days.index(stday)
+    weekseparator='\n'
+    
+    rowNo=1
+    while True:
+        callText+=weekseparator
+        #Stop after current Month
+        if(currDate.month!=month):
+            break
+        
+        for i in range(7):
+            #for not extending date beyond current Month
+            if(currDate.month!=month):
+                break
+           
+            if(rowNo==1 and i>=tpos):
+                #slicing string based on specific position
+                if Days[i]==callText1[stpos:stpos+3]:
+                    dayNoLabel=(' '*stpos)+str(currDate.day)
+                elif ((i>0) and len(str(currDate.day))>1):
+                    dayNoLabel=(' '*(8))+str(currDate.day)
+                elif ((i>0) and len(str(currDate.day))==1):
+                    dayNoLabel=(' '*(7))+str(currDate.day)        
+                callText+=dayNoLabel
+                stpos=stpos+6
+                currDate=currDate+datetime.timedelta(days=1)
+            elif(rowNo==2):
+                if((i==0) and len(str(currDate.day))==1):
+                    dayNoLabel=(' '*5)+str(currDate.day)
+                elif ((i>0) and len(str(currDate.day))==1):
+                    dayNoLabel=(' '*(7))+str(currDate.day)
+                elif ((i==0) and len(str(currDate.day))>1):
+                    dayNoLabel=(' '*(5))+str(currDate.day)    
+                elif ((i>0) and len(str(currDate.day))>1):
+                    if len((str((currDate-datetime.timedelta(days=1)).day)))==1:
+                        dayNoLabel=(' '*(7))+str(currDate.day)
+                    else:
+                        dayNoLabel=(' '*(6))+str(currDate.day)
+                callText+=dayNoLabel
+                currDate=currDate+datetime.timedelta(days=1)    
+            elif(rowNo>2):
+                if((i==0) and len(str(currDate.day))==1):
+                    dayNoLabel=(' '*5)+str(currDate.day)
+                elif ((i>0) and len(str(currDate.day))==1):
+                    dayNoLabel=(' '*(7))+str(currDate.day)
+                elif ((i==0) and len(str(currDate.day))>1):
+                    dayNoLabel=(' '*(5))+str(currDate.day)    
+                elif ((i>0) and len(str(currDate.day))>1):
+                    dayNoLabel=(' '*(6))+str(currDate.day)
+                callText+=dayNoLabel
+                currDate=currDate+datetime.timedelta(days=1)
+            
+        
+        rowNo+=1
+    
+        
+    return callText
 
-def getCalendar(year,month):
-	callText=''
-	callText+=(' '*34)+MONTHS[month-1]+' '+str(year) +'\n'
-	callText+='......Sun......Mon......Tue......Wed......Thu......Fri......Sat'
-	weekSeparator='\n'
-	blankrow=('|           '*7)+'\n'
-	currentDate=datetime.date(year,month,1)
-#Roll back currentdate until it is Sunday
-	while currentDate.weekday()!=6:
-		currentDate-=datetime.timedelta(days=1)
-	while True:
-		callText+=weekSeparator
-		dayNoRow=''
-		for i in range(7):
-			dayNoLabel=str(currentDate.day).rjust(2)
-			dayNoRow='|'+dayNoLabel+(' '*9)
-			currentDate+=datetime.timedelta(days=1)
-		dayNoRow+='\n'
-		callText+=dayNoRow
-		for i in range(3):
-			callText+=blankRow
-		if(currentDate.month!=month):
-			break
-	callText+=weekSeparator
-	return callText
-	
-callText=getCalendarfor(year,month)
+callText=generateClaendar(year, month)
 print(callText)
-	
-
-
