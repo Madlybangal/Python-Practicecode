@@ -7,7 +7,7 @@ if len(emailAddr)>=6:
             if((emailAddr[-4]==".") ^ (emailAddr[-3]==".")):
                 for i in emailAddr:
                     print("i ",i)
-                    if (i==i.isspace()):
+                    if (i.isspace()):
                         k=1
                     elif i.isalpha():
                         if(i==i.upper()):
