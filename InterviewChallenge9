@@ -1,0 +1,5 @@
+#Use a nested list comprehension to find all of the numbers 
+#from 1-100 that are divisible by any single digit besides 1 (2-9)
+
+result = [number for number in range(1,100) if True in [True for x in range(2,10) if number % x == 0]]
+print(result)
