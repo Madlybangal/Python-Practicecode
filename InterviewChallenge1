@@ -1,0 +1,22 @@
+#To complete this challenge, write a function that accepts a number as a parameter. 
+#The function should return a number that’s the difference between the largest and 
+# smallest numbers that the digits can form in the number.
+#For example, if the parameter is "213", the function should return "198", 
+#which is the result of 123 subtracted from 321.
+from pickle import TRUE
+
+
+def myCal(num):
+    number=str(num)
+    #minimum number
+    #The join() method takes all items in an iterable and joins them into one string.
+    #A string must be specified as the separator.
+    numbers=''.join(sorted(number))
+    print("numbers: ",numbers)
+    # maximum number
+    numberb=''.join(sorted(number,reverse=True))
+    number=int(numberb)-int(numbers)
+    return number
+
+
+print(myCal(213))
