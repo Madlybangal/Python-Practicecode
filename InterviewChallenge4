@@ -1,0 +1,8 @@
+#Check given key exists in a dictionary or not
+
+dict={'Pratik':'PowerBI','Vikram':'DevOPs','Diganta':'SQL','Somu':'VBA'}
+user_input=input("Please enter the key you want to check:> ")
+if user_input in dict:
+    print("The key is found and its value is ", dict[user_input])
+else:
+    print("The key not found")
