@@ -1,0 +1,9 @@
+#Remove duplicate items from list in python
+elem=int(input("Enter total no of your list..."))
+empl=[]
+for i in range(elem):
+    val=input("Enter the element")
+    empl.append(val)
+
+non_dup=set(empl)
+print("My list ",non_dup)
