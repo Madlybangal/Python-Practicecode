@@ -1,0 +1,47 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import ttest_ind
+from scipy.stats import ttest_rel
+
+df=pd.read_csv('C:/Users/OneDrive /Machine Learning/GenderGap/Data.csv')
+print("df: ",df.groupby('Gender')['Gender'].count())
+#Structure of data Set
+print(df.shape) 
+#check Datatypes
+print(df.dtypes)
+#check missing values
+print(df.isna().sum())
+print(df.describe(include='all'))
+df.hist(column='PerfEval',by='Gender')
+plt.gcf().canvas.set_window_title('Performance Evaluation')
+plt.show()
+
+df.hist(column='Age',by='Gender')
+plt.gcf().canvas.set_window_title('Age Histogram')
+plt.show()
+#Boxplot the BasePay,Bonus  salaries per gender:
+df.boxplot(column=['BasePay','Bonus'],by='Gender')
+plt.gcf().canvas.set_window_title('Boxplot')
+plt.show()
+
+sns.heatmap(df.corr(), vmin=-1.0, annot=True)
+
+plt.title("Correlation Heat Map")
+plt.gcf().canvas.set_window_title('Heat Map')
+plt.show()
+#Statistical Analysis - Hypothesis Testing
+print(df.groupby("Gender").mean())
+#Testing hypothesis to verify statistical significance of BasePay:
+#female "BasePay" has the same average than Male evaluation.
+#female "BasePay" is lower than Male evaluation.
+#Since sample based on Gender is independent; we'll conduct t-test
+result=(ttest_ind(df[df.Gender=="Female"]["BasePay"],df[df.Gender=="Male"]["BasePay"]))
+#We may reject the Null Hypothesis and conclude that Female "Performance Evaluation" is lower 
+#than Male and statistically significance, since  Confidence Level of 5%.
+genderpvalue=result[1]
+if(genderpvalue<0.05):
+    print("Gender Bias Exists")
+else:
+    print("No Gender Bias")    
