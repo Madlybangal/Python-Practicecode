@@ -1,0 +1,23 @@
+#You are given an array prices where prices[i] is the price of a given stock on the 
+# i-th day.
+#You want to maximize your profit by completing as many transactions you like
+#You may not engage in  multiple transactions simultaneously
+#Algo functionality:
+#On day 2 price goes down to 1, day3 price goes up to 5; so we can buy stock on day2
+#sell it on day3; similarly for day 4 & 5; As result max profit 7
+from typing import List
+class stockAlgo:
+
+    def maxProfit(self, prices: List[int]) -> int:
+        profit=0
+        for i in range(1,len(prices)):
+            if prices[i]> prices[i-1]:
+                profit+=prices[i]-prices[i-1]
+
+
+        return profit
+
+
+stckbuy=stockAlgo();
+prices=[7,1,5,3,6,4]
+print(stckbuy.maxProfit(prices))
