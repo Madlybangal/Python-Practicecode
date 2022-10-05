@@ -1,0 +1,19 @@
+#Giving unsorted missing arr
+#Find smallesst possible missing positive  integer >0
+#Missing nos will be in the range 1 to N+1
+#Lets put i-th Number in i-th Position
+nums=[4,-2,3,2,0,7]
+n=len(nums)
+
+for i in range(n):
+    print("i: ",i)
+    corrPos=nums[i]-1
+    while 1<nums[i]<=n and nums[i]!=nums[corrPos]:
+        nums[i],nums[corrPos]=nums[corrPos],nums[i]
+        corrPos=nums[i]-1
+    print(nums[i])
+for i in range(n):
+    if (i+1)!=nums[i]:
+        print("missing +ve no ", i+1)
+        break
+
