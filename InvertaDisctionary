@@ -1,0 +1,12 @@
+#Invert a disctionary
+from collections import defaultdict
+my_dict = {
+  'Izuku Midoriya': 'One for All', 
+  'Katsuki Bakugo': 'Explosion', 
+  'All Might': 'One for All', 
+  'Ochaco Uraraka': 'Zero Gravity'
+}
+
+my_inverted_dict = defaultdict(list)
+{my_inverted_dict[v].append(k) for k, v in my_dict.items()}
+print(my_inverted_dict)
