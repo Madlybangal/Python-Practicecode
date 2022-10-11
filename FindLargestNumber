@@ -12,6 +12,13 @@ class Solution:
                 return -1
             else:
                 return 1
+#cmp_to_key returns a class that behaves like a key function. The class is callable and creates a new instance when called 
+#Using the sorted() method, sort the list of elements with the key received  through  cmp_to_key() function.
+#sorted(iterable, key, reverse) returns a list with elements in sorted order.
+#iterable: sequence (list, tuple, string) or collection (dictionary, set, frozenset) or any other iterator that needs to be sorted.
+#key(optional): A function that would serve as a key or a basis of sort comparison.
+#reverse(optional): If True, then the iterable would be sorted in reverse (descending) order, by default it is set as False.
+
         nums=sorted(nums,key=cmp_to_key(compare))
         return str(int("".join(nums)))
 
