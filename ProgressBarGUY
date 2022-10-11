@@ -1,0 +1,25 @@
+import time
+from tkinter import *
+from tkinter.ttk import *
+master=Tk()
+progBar=Progressbar(master,orient=HORIZONTAL,length=100,mode='determinate')
+print(progBar.size)
+def progFunc():
+    progBar['value']=20
+    master.update_idletasks()
+    time.sleep(1)
+    progBar['value']=40
+    master.update_idletasks()
+    time.sleep(1)
+    progBar['value']=60
+    master.update_idletasks()
+    time.sleep(1)
+    progBar['value']=80
+    master.update_idletasks()
+    time.sleep(1)
+    progBar['value']=100
+    master.update_idletasks()
+    time.sleep(1)
+progBar.pack()
+Button(master,text='Start',command=progFunc).pack(pady=10)
+mainloop()
