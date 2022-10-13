@@ -1,0 +1,22 @@
+#  Resampling in python Pandas
+# Resample Time Series Data Using Pandas To Enhance Analysis
+# So, if one needs to change the data instead of daily to monthly or weekly etc. or vice versa,
+# we need to do resampling.
+# Downsampling Decreases frequency like from second to hour  
+# Upsampling increases frequency from Month to day,hour to second
+# Set index to Timeseries Data
+# Upsample with interpolation
+# Downsample with aggregation
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from vega_datasets import data
+sp=data.sp500()
+print(sp.head())
+sp.set_index(['date'],inplace=True)
+#print(sp.head())
+# Upsampling
+#print(sp[['price']].resample('H').ffill())
+#Downsampling
+avg_month=sp[['price']].resample('M').mean()
+print(avg_month)
