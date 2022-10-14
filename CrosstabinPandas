@@ -1,0 +1,25 @@
+#Cross tab
+#This method is used to compute a simple cross-tabulation of two (or more) factors. 
+#By default, computes a frequency table of the factors unless an array of values and an 
+#aggregation function are passed.
+
+import pandas as pd
+df = pd.read_excel(r"C:\Users\703221527\OneDrive - Genpact\Machine Learning\Hands-On-Data-Analysis-with-Pandas-master\ch_04\exercises\survey.xls")
+df
+print(pd.crosstab(df.Nationality,df.Handedness))
+print(pd.crosstab(df.Sex,df.Handedness))
+#Margins
+# margins : bool, default False, Add row/column margins (subtotals).
+print(pd.crosstab(df.Sex,df.Handedness, margins=True))
+#Multi Index Column and Rows
+pd.crosstab(df.Sex, [df.Handedness,df.Nationality], margins=True)
+pd.crosstab([df.Nationality, df.Sex], [df.Handedness], margins=True)
+#Normalize
+#Normalize by dividing all values by the sum of values. If passed 'all' or True , 
+#will normalize over all values. If passed 'index' will normalize over each row. If passed 
+#'columns' will normalize over each column.
+pd.crosstab(df.Sex, df.Handedness, normalize='index')
+#Aggfunc and Values
+# function, optional, If specified, requires `values` be specified as well.
+import numpy as np
+pd.crosstab(df.Sex, df.Handedness, values=df.Age, aggfunc=np.average)
