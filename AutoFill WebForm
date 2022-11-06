@@ -1,0 +1,95 @@
+# Autofill Webform
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import pandas as pd
+import maskpass
+import requests
+import json
+
+from sqlalchemy import false
+# Xpath is the path written under html/xml tags and their attributes to reach to a particular nodes
+# (or web element) in an HTML or XML Page
+#Types of Xpath:
+# Absolute XPath-starts from beginning of the page. "/" is used to access an immediate child of
+# the parent tag. html/body/table/tr[2]/td/input
+# Relative Xath it starts from anywhere in the page ."//" is used to access any  child of
+# the parent tag.  Syntax //htmltagname[@attribute='value']
+#There are 3 methods in Xpath contains(), text(),starts-with(). Examples:
+#Relative Xpath starts with// 
+#//label[text()='User_ID must not be blank']  
+#//label[contains(text(),'User_ID')]
+#//label[contains(@id,'message')],//label[starts-with(@id,'message')]
+#Xpath Sibling is defined as a function for retrieving a web element
+#that is a child of the parent element. Syntax:
+#//node [attribute='value of attribute']//following-sibling::attribute
+#//lablel[text()='Email']/following-sibling::input[1]
+#//td[text()='Maria Anders']/preceding-sibling::td/child::input
+#//label[text()='Email']/following-sibling::input[1]/parent::div
+#//div[@class='container']//child::input[@type='text']
+#//div[@class='container']//descendant::button
+#//div[@class='buttons']//ancestor or self::div
+#//label[text()='Password']//following::input[1]
+
+driver=webdriver.Chrome(r"C:\Users\703221527\OneDrive - Genpact\Machine Learning\AutoFillWebForm\chromedriver_win32\chromedriver.exe")
+excel_reader=pd.read_excel(r"C:\Users\703221527\OneDrive - Genpact\Machine Learning\AutoFillWebForm\WebFormList.xlsx")
+
+wait=WebDriverWait(driver,5)
+driver.maximize_window
+driver.get('https://apps.powerapps.com/play/e/default-bdef8a20-aaac-4f80-b3a0-d9a32f99fd33/a/2f36f5e0-539c-4405-889e-a7cb2c1d972a?tenantId=bdef8a20-aaac-4f80-b3a0-d9a32f99fd33&source=portal')
+time.sleep(4)
+
+wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="i0116"]')))
+userid=driver.find_element("xpath",'//*[@id="i0116"]')
+userid.send_keys("703221527@genpact.com")
+login=driver.find_element("xpath",'//*[@id="idSIButton9"]')
+login.click()
+time.sleep(7)
+
+wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="okta-signin-username"]')))
+okta_userid=driver.find_element("xpath",'//*[@id="okta-signin-username"]')
+okta_userid.send_keys("703221527@genpact.com")
+pwd = maskpass.askpass(prompt="Password:", mask="*")
+okta_pwd=driver.find_element("xpath",'//*[@id="okta-signin-password"]')
+okta_pwd.send_keys(pwd)
+okta_login=driver.find_element("xpath",'//*[@id="okta-signin-submit"]')
+okta_login.click()
+time.sleep(10)
+i=1    
+
+wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="form34"]/div[2]/input')))
+okta_push=driver.find_element("xpath",'//*[@id="form34"]/div[2]/input')
+okta_push.click()
+time.sleep(16)
+
+wait.until(EC.visibility_of_element_located((By.XPATH,'//*[@id="idSIButton9"]')))    
+final_login=driver.find_element("xpath",'//*[@id="idSIButton9"]')
+final_login.click()
+time.sleep(10)
+
+for index, row in excel_reader.iterrows():
+    driver.switch_to.frame("fullscreen-app-host")
+    wait.until(EC.presence_of_element_located((By.CLASS_NAME,'appmagic-borderfill-container')))    
+    driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Nametextbox"]').clear()
+    name=driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Nametextbox"]')
+    name.send_keys(row['Name'])
+    driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Agetextbox"]').clear()
+    age=driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Agetextbox"]')
+    age.send_keys(row['Age'])
+    driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Subjecttextbox"]').clear()
+    subject=driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Subjecttextbox"]')
+    subject.send_keys(row['Subject'])
+    driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Scoretextbox"]').clear()
+    score=driver.find_element("xpath",'//div[@class="appmagic-borderfill-container"]//child::input[@appmagic-control="txt_Scoretextbox"]')
+    score.send_keys(row['Score'])
+    submitbutton=driver.find_element("xpath",'//div[text()="Submit"]')
+    submitbutton.click()
+    time.sleep(8)
+    driver.refresh()
+    driver.switch_to.default_content()
+driver.quit()
+del excel_reader
+print("form submission completed")
