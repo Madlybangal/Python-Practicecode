@@ -1,0 +1,17 @@
+Problem statement: Aapali Taxi is a taxi cab operator. They have 3 types of cars- Mini, Sedan and SUV, each with different tariffs. When customers approach them for 
+booking rides, they show an “Estimated Cost” for the passengers based on various parameters. 
+Mini ● Base charges flat up to 3 KM- Rs. 50 
+● For the next 15 KM- Rs. 10 per KM 
+● Additional distance charged at Rs. 8 per KM 
+● If the total ride distance is more than 75 KM, the ride is charged at Rs. 8 per KM flat with no base charges Sedan 
+● Base charges flat up to 5 KM- Rs. 80 
+● For the next 15 KM- Rs. 12 per KM 
+● Additional distance charged at Rs. 10 per KM 
+● If the total ride distance is more than 100 KM, the ride charged at Rs. 10 per KM flat with no base charges SUV 
+● Base charges flat up to 5 KM- Rs. 100 
+● For the next 15 KM- Rs. 15 per KM 
+● Every additional KM- Rs. 12 per KM 
+● No flat charges, pay as per tariff above Sample scenarios: Input: 10 KM Expected Output: Mini - Rs. 120, Sedan - Rs. 140, 
+SUV - Rs. 175 Input: 20 km Expected Output: Mini - Rs. 216, Sedan - Rs. 260, SUV - Rs. 325 Input: 80 km Expected Output: Mini - Rs. 640, 
+Sedan - Rs. 860, SUV - Rs. 1045 Input: 120 km Expected Output: Mini - Rs. 960, Sedan - Rs. 1200, SUV - Rs. 1525 
+You need to create a program to calculate the “Estimated Cost”
