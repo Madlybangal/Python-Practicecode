@@ -1,0 +1,11 @@
+import datetime as dt
+def cal_allsundays(cyear):
+    
+    mydt=dt.date(cyear,1,1)
+    mydt+=dt.timedelta(days=6-mydt.weekday())
+    while mydt.year==cyear:
+        yield mydt
+        mydt +=dt.timedelta(days=7)
+
+for sund in cal_allsundays(2022):
+    print(sund)
