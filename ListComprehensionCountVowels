@@ -1,0 +1,17 @@
+def checkVowels(myWord):
+    vowellist='aeiou'
+    count=0
+    print("myword: ",myWord)
+    for  vowel in vowellist:
+        print("vowel: ",vowel)
+        count+=myWord.lower().count(vowel)
+        print("count: ",count)
+    if(count<3) and (count>1) :
+        return True
+    else:
+        return False
+
+fruits = ['mango', 'kiwi', 'strawberry', 'guava', 'pineapple', 'mandarin orange']
+vowels='aeiou'
+fruits_with_only_two_vowels=([el for el in fruits if checkVowels(el) ])
+print(fruits_with_only_two_vowels)
