@@ -1,0 +1,31 @@
+class A():  
+    def __init__(self):
+        print("Starting __init__ of A")
+        self.name = "Tony Stark"
+        print("ending __init__ of A")
+
+    def display(self):
+        print("method of class A")
+   
+class B():  
+    def __init__(self):
+        print("Starting __init__ of B")
+        self.name = "Steve Rogers"
+        print("ending __init__ of B")
+        
+    def display(self):
+        print("method of class B")
+  
+
+class C(A, B):
+    def __init__(self):
+        print("Starting __init__ of C")
+        super().__init__()
+        print("ending __init__ of C")
+        
+    def display(self):
+        print("method of class C")
+
+c1=C()
+c1.name
+c1.display()
