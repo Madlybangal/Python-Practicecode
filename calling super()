@@ -1,0 +1,19 @@
+class A:
+    classvar1="I am  a variable for  class A"
+    def __init__(self):
+        self.var1="I am inside class A's constructor"
+        self.classvar1="Instance variable in class A"
+        self.special="Special"
+
+class B(A):
+    classvar1="I am a varibale for class B"
+    #constructor from parent calss overridden
+    def __init__(self):
+        super().__init__()#calling constructor from parent class
+        self.var1="I am inside class B's constructor"
+        self.classvar1="Instance variable in class B"
+
+a=A()
+b=B()
+print(b.special, b.var1,b.classvar1)
+
