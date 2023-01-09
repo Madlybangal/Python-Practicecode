@@ -1,0 +1,34 @@
+import sqlite3
+conn=sqlite3.connect('somudata.db')
+#create a cursor
+curs=conn.cursor()
+
+#create a table
+# curs.execute("""CREATE TABLE IF NOT EXISTS tbl_customers(
+#         f_name text,
+#         l_name text,
+#         email text
+#     ) """)
+# many_customers=[('Wes','Brown','wes@brown.com'),('Steph','Kuewa','steph.k@gmail.com'),('Dan','Pas','dan@pas.com')]             
+# curs.execute("""INSERT INTO tbl_customers  VALUES('Soumyendu Paul','Choudhury','soumyendu.pc@gmail.com') 
+#      """)
+# curs.executemany("""INSERT INTO tbl_customers  VALUES(?,?,?)""",many_customers)
+#Query the database
+#rowid gives default primary key
+# curs.execute("SELECT rowid, * FROM tbl_customers")
+# curs.fetchone()
+# curs.fetchmany(3)
+# Update records
+# curs.execute("""UPDATE tbl_customers SET l_name='Chou' where f_name like'Sonali Paul' 
+# """)
+# conn.commit()
+# curs.execute("DROP TABLE tbl_customers")
+curs.execute("SELECT rowid, * FROM tbl_customers  ORDER BY f_name LIMIT 3")
+items=(curs.fetchall())
+for item in items:
+    print(str(item[0])+"\t" +item[1]+"\t"+item[2])     
+print("Command executed successfully")
+# Commit our command
+conn.commit()
+# Close our connection
+conn.close()
