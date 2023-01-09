@@ -1,0 +1,6 @@
+import databasesql
+
+databasesql.delete_one('13')
+# databasesql.addnew_record("Laura","Smaith","laura.s@gmail.com")
+
+databasesql.show_all()
