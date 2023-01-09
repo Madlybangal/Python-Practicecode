@@ -1,0 +1,123 @@
+import sqlite3
+import os
+import sys
+
+
+class ExpenseTracker():
+    def __init__(self):
+        
+        print('WELCOME TO EXPENSE TRACKER. HERE YOU CAN STORE YOUR EXPENSES AND KEEP A TRACK OF THEM.\n')
+
+    def menu_guide(self):
+        print("""
+                        MENU CHOICE
+                        
+                    1. First, press 1 to load or create your database and  table
+                    2. Press 2 to insert expenses - the reason you are inserting,amount, type & date
+                    3. Press 3 to show the expenses details
+                    4. Press 4 to update your expenses
+                    5. Press 5 to delete your expenses
+                    6. Press Q to exit
+                    
+            """)
+            
+        menu=input("Please Select your Menu:")
+        return menu
+        
+    def create_dbase(self):
+            #create databae
+        createdb=input("Press C to create database| Press P to work with previous database").upper()
+        if (createdb=='C'):
+            dbname='expensetracker.db'
+            self.conn=sqlite3.connect(dbname)
+            self.cur=self.conn.cursor()
+            print("Database created successfully")
+        elif (createdb=='P'):
+            dbname='expensetracker.db'
+            self.conn=sqlite3.connect(dbname)
+            self.cur=self.conn.cursor()
+            # Create a table
+            self.cur.execute("""
+                CREATE TABLE IF NOT EXISTS tbl_expenses(ename TEXT,eamount REAL,etype TEXT,edate TEXT)
+            """)
+            self.conn.commit()
+    
+    def quit_app(self):
+        self.conn.close()
+        sys.exit()
+
+    def enter_expenses(self):
+        entry=True
+        while entry:
+            expname=input("Enter the name of your Expenditure: ")
+            expaamount=input("How much have you spent?")
+            exptype=input("Please entertype of expenditure...like Grocery, vegetables, clothes....")
+            expdate=input("Please enter the date when you spend your money(Format=dd/mm/yyyy)")
+            self.cur.execute("""INSERT INTO tbl_expenses (ename,eamount,etype,edate) VALUES(?,?,?,?)""",
+            (expname,expaamount,exptype,expdate))
+            self.conn.commit()
+            print("Data entered successfully")
+            entryMultiple=input("If you want to enter MORE DATA press Y or else N to STOP ")
+            if (entryMultiple=='N'):
+                entry=False
+
+    def del_expenses(self):
+        print("Once you delete,it'll be deleted permanently")
+        expnamevalue=input("Please enter expense name you want to delete")
+        expdatevalues=input("Please enter date you want to delete(Format=dd/mm/yyyy)")    
+        self.cur.execute("""DELETE from tbl_expenses where ename = ? AND edate=?""",(expnamevalue,expdatevalues)
+            )
+        self.conn.commit()
+
+    def upd_expense(self):
+        changeValue=input("""
+        "Enter the value which you want to change (expense - For changing the expense name, expenseamount - For changing the expenditure amount,expensetype - For changing the expenditure type, edate - For changing the date) - """)
+        if(changeValue=="expense"):
+            newvalue = input("Enter the new value: ")
+            idvalue = input("Enter the value for rowid: ")
+            self.cur.execute("""UPDATE tbl_expenses SET expense = ? where rowid = ?""", (newvalue, idvalue))
+        elif(changeValue=="expenseamount"):
+            newvalue = input("Enter the new value: ")
+            idvalue = input("Enter the value for rowid: ")
+            self.cur.execute("""UPDATE tbl_expenses SET eamount = ? where rowid = ?""", (newvalue, idvalue))
+        elif(changeValue=="expensetype"):
+            newvalue = input("Enter the new value: ")
+            idvalue = input("Enter the value for rowid: ")
+            self.cur.execute("""UPDATE tbl_expenses SET etype = ? where rowid = ?""", (newvalue, idvalue))
+        elif(changeValue=="edate"):
+            newvalue = input("Enter the value of the identification(Format=dd/mm/yyyy) - ")
+            idvalue = input("Enter the value for rowid: ")
+            self.cur.execute("""UPDATE tbl_expenses SET edate = ? where rowid = ?""", (newvalue,idvalue))
+        self.conn.commit()
+        print("Data updated successfully")
+    def show_expensedata(self):
+        print(20 * '*')
+        print("Your expenses are as follows:- \n\n")
+        totalexpenses=0
+        self.cur.execute("SELECT rowid,* FROM tbl_expenses")
+        items=self.cur.fetchall()
+        for item in items:
+            totalexpenses+=float(item[2])
+            print(str(item[0])+"\t" +str(item[1])+"\t"+str(item[2])+"\t"+str(item[3])+"\t"+str(item[4]))     
+        print("Total Expenditure: ",totalexpenses)
+        self.conn.commit()
+    def main():
+        et=ExpenseTracker()
+        menuchoice=et.menu_guide()
+        while menuchoice!='Q':
+            if(menuchoice=='1'):
+                et.create_dbase()
+            elif(menuchoice=='2'):
+                et.enter_expenses()
+            elif(menuchoice=='3'):
+                et.show_expensedata()
+            elif(menuchoice=='4'):
+                et.upd_expense()
+            elif(menuchoice=='5'):
+                et.del_expenses()
+            elif(menuchoice=='Q'):
+                et.quit_app()
+            menuchoice=et.menu_guide()        
+        
+if __name__=='__main__':
+        ExpenseTracker.main()
