@@ -1,0 +1,9 @@
+def listsum(ldata):
+    if len(ldata)==1:
+        return ldata[0]
+    else:
+        return ldata[0]+sum(ldata[1:])
+
+print(listsum([4,5,6]))
+
+
