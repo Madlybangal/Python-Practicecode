@@ -1,0 +1,20 @@
+#Class methods are methods that are called on the class itself, not on a specific object instance.
+# The class method can be called using ClassName.method_name() as well as by using an object of the class.
+class Student:
+    school_name='Indira Gandhi International School'
+
+    def __init__(self,name,age):
+        self.name=name
+        self.age=age
+        # We must explicitly tell Python that it is a class method using the @classmethod decorator
+    @classmethod
+    def change_school(cls,name):
+        print(Student.school_name)
+        Student.school_name=name
+        return Student.school_name
+# You can use class methods for any methods that are not bound to a specific instance but the class. 
+# In practice, you often use class methods for methods that create an instance of the class.
+# When a method creates an instance of the class and returns it, the method is called a factory method.
+somu=Student('Somu',16)
+print('school_name: ', Student.change_school('Adharchand Higher Secondary School'))
+
