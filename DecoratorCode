@@ -1,0 +1,16 @@
+# Here, the ordinary() function is decorated with the make_pretty() decorator using the @make_pretty syntax
+# A decorator is a function that takes another function as an argument and returns a new function that 
+# modifies the behavior of the original function. The new function is often referred to as a "decorated" 
+# function.
+def make_pretty(func):
+    def inner():
+        print("Decorated")
+        func()
+    return inner
+
+
+@make_pretty
+def ordinary():
+    print("Ordinary")
+
+ordinary()
