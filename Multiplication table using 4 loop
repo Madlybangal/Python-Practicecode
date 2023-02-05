@@ -1,15 +1,21 @@
 #Multiplication table function using for loop
 
 import pandas as pd
-list_table=[2,3,4,5,6,7,8,10]
-
-def mult_table(list_table):
+def createmult_table(list_table):
     table_dic={}
+    indextable=[]
     for num in list_table:
         table1=[]
-        for i in list(range(1,11)):
+        for i in range(1,11):
+           
+            if(len(indextable)<10):
+                #  print("i",len(indextable))
+                 indextable.append(i)                
             table1.append(num*i)
+        table_dic["index"]=indextable    
         table_dic[num]=table1
-    return pd.DataFrame(table_dic)
+        multtable_df=pd.DataFrame(table_dic)
+        multtable_df.set_index("index",inplace=True)
+    return multtable_df
 
-print(mult_table([4,5]))
+print(createmult_table([4,5]))
