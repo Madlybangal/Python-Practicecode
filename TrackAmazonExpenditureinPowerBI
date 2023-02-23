@@ -1,8 +1,7 @@
-# download chromedriver for selenium based on Google Chrome version
-#Goto three dots in Google Chrome browser-Select Help-Select About Google Chrome to see latest version
-# Google Chrome Driver path C:\Users\*\OneDrive - *\Machine Learning\TrackAmazonSpendingData
-
 from selenium import webdriver
+#to handle version conflict of Chrome and ChromeDriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support.ui import Select
 import time
@@ -11,121 +10,154 @@ import os
 import pandas as pd
 import numpy as np
 
-websiteurl="https://www.amazon.in"
-yearlist=[]
-options = webdriver.ChromeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-chdriver_path=os.getcwd()+"\chromedriver.exe"
-# Launches a Chrome browser controlled by Selenium
-chdriver=webdriver.Chrome(chdriver_path,options=options)
-wait=WebDriverWait(chdriver,5)
-chdriver.maximize_window
-chdriver.get(websiteurl)
-time.sleep(5)
-
-# Navigates to the Amazon login page
-login_details=chdriver.find_element("xpath",'//*[@id="nav-link-accountList-nav-line-1"]')
-login_details.click()
-time.sleep(5)
-user_id=chdriver.find_element("xpath",'//*[@id="ap_email"]')
-user_id.send_keys("pc_soumyendu@yahoo.co.in")
-click_next=chdriver.find_element("xpath",'//*[@id="continue"]')
-click_next.click()
-pwd=chdriver.find_element("xpath",'//*[@type="password"]')
-#alternately you can maskpass using environment variable for windows
-# masking password as there is restriction in my system
-mpwd=maskpass.askpass(mask="#")
-pwd.send_keys(mpwd)
-#login
-login=chdriver.find_element("xpath",'//*[@id="signInSubmit"]')
-login.click()
-time.sleep(5)
-# After login, navigates to the Orders page
-orderdetails=chdriver.find_element("xpath",'//span[text()="& Orders"]')
-orderdetails.click()
-time.sleep(5)
-yeardropdown=chdriver.find_element("xpath",'//select[@name="orderFilter"]')
-selector=Select(yeardropdown)
-options=selector.options
-
-for ind in range(0,len(options)):
-    
-    if(options[ind].text.isdigit()):
-        yearlist.append(options[ind].text)
+class amazonexpensetracker:
+    def __init__(self):
+        global options
+        global websiteurl
+        global yearlist
+        global Order_ID
+        global Order_Date
+        global Product_Name
+        global Amount
+        global Year_List
+        global chdriver
+        global orderdetails_df
+        websiteurl="https://www.amazon.in"
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        # Launches a Chrome browser controlled by Selenium
+        yearlist=[]
+        Order_ID=[]
+        Order_Date=[]
+        Product_Name=[]
+        Amount=[]
+        Year_List=[]
+        orderdetails_df=pd.DataFrame()
+        #handling ChromeDriver Version Conflict
+        chdriver=webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        wait=WebDriverWait(chdriver,5)
+        chdriver.maximize_window
+        chdriver.get(websiteurl)
+        time.sleep(5)
         
+        
+    def amazonLogin(self):
+        
+        # Navigates to the Amazon login page
+        login_details=chdriver.find_element("xpath",'//*[@id="nav-link-accountList-nav-line-1"]')
+        login_details.click()
+        time.sleep(5)
+        user_id=chdriver.find_element("xpath",'//*[@id="ap_email"]')
+        user_id.send_keys("pc_soumyendu@yahoo.co.in")
+        click_next=chdriver.find_element("xpath",'//*[@id="continue"]')
+        click_next.click()
+        pwd=chdriver.find_element("xpath",'//*[@type="password"]')
+        #alternately you can maskpass using environment variable for windows
+        # masking password as there is restriction in my system
+        mpwd=maskpass.askpass(mask="#")
+        pwd.send_keys(mpwd)
+        #login
+        login=chdriver.find_element("xpath",'//*[@id="signInSubmit"]')
+        login.click()
+        time.sleep(5)
 
+    def amazongetData(self):
+        # After login, navigates to the Orders page
 
-# defining empty lists to store the parsed values
-Order_ID=[]
-Order_Date=[]
-Product_Name=[]
-Amount=[]
-Year_List=[]
-orderdetails_df=pd.DataFrame()
-# Scrapes Item Costs, Order IDs, and Order Dates,Product Name
-# Repeats for each year in the year filter and each page in the pagination filter until finished
-for i in range(0,len(yearlist)):
-    YearVal=yearlist[i]
-    print("YearVal: ",YearVal)
-    yearName=chdriver.find_element("xpath","//option[contains(@value,'" + yearlist[i] + "')]")
-    yearName.click()
-    time.sleep(5)
-    no_of_orders=int(chdriver.find_element("xpath",'//span[@class="num-orders"]').text.split(" ")[0])
-    lastpage_count=no_of_orders % 10
-    # print(" no_of_orders: ", no_of_orders)
-    # print(" no_of_orders in last page: ", no_of_orders % 10)
-    if( no_of_orders<10):
-        orderdetails_list=chdriver.find_elements("xpath",'//span[@class="a-color-secondary value"]')
-        for j in range(0,no_of_orders):
-            # print("j: ",j)
-            Order_Date.append(orderdetails_list[j*3].text)
-            Amount.append(orderdetails_list[j*3+1].text)
-            Order_ID.append(orderdetails_list[j*3+2].text)
-            Year_List.append(YearVal)
-        productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
-        for elem in productname_list:
-            if(len(elem.text))>0:
-                Product_Name.append(elem.text)
-    else:
-        #handling pagination
-        for k in range(1,int(no_of_orders/10)+2):
-            if(k<int(no_of_orders/10)+1):
-                print("k: ",k)
+        orderdetails=chdriver.find_element("xpath",'//span[text()="& Orders"]')
+        orderdetails.click()
+        time.sleep(5)
+        yeardropdown=chdriver.find_element("xpath",'//select[@name="orderFilter"]')
+        selector=Select(yeardropdown)
+        options=selector.options
+        
+       
+        for ind in range(0,len(options)):
+           
+            if(options[ind].text.isdigit()):
+                yearlist.append(options[ind].text)
+                # defining empty lists to store the parsed values
+                
+        # Scrapes Item Costs, Order IDs, and Order Dates,Product Name
+        # Repeats for each year in the year filter and each page in the pagination filter until finished
+        for i in range(0,len(yearlist)):
+            YearVal=yearlist[i]
+            
+            yearName=chdriver.find_element("xpath","//option[contains(@value,'" + yearlist[i] + "')]")
+            yearName.click()
+            time.sleep(5)
+            no_of_orders=int(chdriver.find_element("xpath",'//span[@class="num-orders"]').text.split(" ")[0])
+            lastpage_count=no_of_orders % 10
+            print("YearVal: ",YearVal)
+            print(" no_of_orders: ", no_of_orders)
+                    # print(" no_of_orders in last page: ", no_of_orders % 10)
+            if( no_of_orders<10):
                 orderdetails_list=chdriver.find_elements("xpath",'//span[@class="a-color-secondary value"]')
-                for j in range(0,10):
-                    # print("j: ",j)
+                for j in range(0,no_of_orders):
+                    print("j: ",j)
                     Order_Date.append(orderdetails_list[j*3].text)
                     Amount.append(orderdetails_list[j*3+1].text)
                     Order_ID.append(orderdetails_list[j*3+2].text)
                     Year_List.append(YearVal)
-                productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
-                for elem in productname_list:
-                    if(len(elem.text))>0:
-                        Product_Name.append(elem.text)
-                if(k<(int(no_of_orders/10)+1)):
-                    nextPage=chdriver.find_element("xpath",'//li[@class="a-last"]')
-                    nextPage.click()
-
+                    productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
+                    if(j==0):
+                        for elem in productname_list:
+                            print("elem1: ",(elem.text))
+                            print("length elem1: ",len(elem.text))
+                            if(len(elem.text))>0:
+                                Product_Name.append(elem.text)
+                        
             else:
-                # print("k: ",k)
+                #handling pagination
+                for k in range(1,int(no_of_orders/10)+2):
+                    if(k<int(no_of_orders/10)+1):
+                        print("k: ",k)
+                        orderdetails_list=chdriver.find_elements("xpath",'//span[@class="a-color-secondary value"]')
+                        for j in range(0,10):
+                            print("j: ",j)
+                            Order_Date.append(orderdetails_list[j*3].text)
+                            Amount.append(orderdetails_list[j*3+1].text)
+                            Order_ID.append(orderdetails_list[j*3+2].text)
+                            Year_List.append(YearVal)
+                            
+                            if(j==0):
+                                productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
+                                for elem in productname_list:
+                                    print("elem2: ",(elem.text))
+                                    if(len(elem.text))>0:
+                                        Product_Name.append(elem.text)
+                            # if(k<(int(no_of_orders/10)+1)):
+                        nextPage=chdriver.find_element("xpath",'//li[@class="a-last"]')
+                        nextPage.click()
+
+                    else:
+                        orderdetails_list=chdriver.find_elements("xpath",'//span[@class="a-color-secondary value"]')    
+                        for j in range(0,lastpage_count):
+                            print("j: ",j)
+                            Order_Date.append(orderdetails_list[j*3].text)
+                            Amount.append(orderdetails_list[j*3+1].text)
+                            Order_ID.append(orderdetails_list[j*3+2].text)
+                            Year_List.append(YearVal)
+                            
+                            if(j==0):
+                                    productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
+                                    for elem in productname_list:
+                                        print("elem3: ",(elem.text))
+                                        print("length elem3: ",len(elem.text))
+                                        if(len(elem.text))>0:
+                                            Product_Name.append(elem.text)
                 
-                orderdetails_list=chdriver.find_elements("xpath",'//span[@class="a-color-secondary value"]')
-                for j in range(0,lastpage_count):
-                     Order_Date.append(orderdetails_list[j*3].text)
-                     Amount.append(orderdetails_list[j*3+1].text)
-                     Order_ID.append(orderdetails_list[j*3+2].text)
-                     Year_List.append(YearVal)
-                productname_list=chdriver.find_elements("xpath",'//a[contains(@href,"/gp/product/")]')
-                for elem in productname_list:
-                    if(len(elem.text))>0:
-                         Product_Name.append(elem.text)
-                
-orderdetails_df['OrderID']=Order_ID
-orderdetails_df['OrderDate']=Order_Date
-orderdetails_df['Purchase Year']=Year_List
-orderdetails_df['Amount']=Amount
-orderdetails_df['ProductName']=Product_Name
-orderdetails_df.to_csv(r'C:\Users\*\OneDrive - *\Machine Learning\TrackAmazonSpendingData\AmazonExpense.csv',index=False)
-# Outputs the data model to a CSV file
-chdriver.quit()
+        orderdetails_df['OrderID']=Order_ID
+        orderdetails_df['OrderDate']=Order_Date
+        orderdetails_df['Purchase Year']=Year_List
+        orderdetails_df['Amount']=Amount
+        orderdetails_df['ProductName']=Product_Name
+        orderdetails_df.to_csv(r'C:\Users\703221527\OneDrive*\Machine Learning\TrackAmazonSpendingData\AmazonExpense.csv',index=False)
+        # Outputs the data model to a CSV file
+        chdriver.quit()
+        print("TrackerDownloaded sucessfully")
+if __name__=='__main__':
+    amz=amazonexpensetracker()
+    amz.amazonLogin()
+    amz.amazongetData()
