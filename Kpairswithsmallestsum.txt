@@ -1,0 +1,78 @@
+# You are given two integer arrays nums1 and nums2 sorted in non-decreasing order
+# and an integer k.
+# Define a pair (u, v) which consists of one element from the first array and 
+# one element from the second array.
+# Return the k pairs (u1, v1), (u2, v2), ..., (uk, vk) with the smallest sums.
+#Find K Pairs with Smallest Sums
+#https://www.youtube.com/watch?v=Youk8DDnLU8
+import heapq
+from typing import List
+import heapq
+
+def kSmallestPair(A, B, K):
+	n = len(A)
+	# Min heap which contains tuple of the format
+	# (sum, (i, j)) i and j are the indices
+	# of the elements from array A
+	# and array B which make up the sum.
+	pq = []
+
+	# my_set is used to store the indices of
+	# the pair(i, j) we use my_set to make sure
+	# the indices does not repeat inside min heap.
+	my_set = set()
+
+	# initialize the heap with the minimum sum
+	# combination i.e. (A[0] + B[0])
+	# and also push indices (0,0) along
+	# with sum.
+	heapq.heappush(pq, (A[0] + B[0], (0, 0)))
+	my_set.add((0, 0))
+
+	# iterate upto K
+	flag = 1
+	for count in range(K):
+		# tuple format (sum, i, j).
+		temp = heapq.heappop(pq)
+		i, j = temp[1][0], temp[1][1]
+		print("({}, {})".format(A[i], B[j])) # Extracting pair with least sum such
+											# that one element is from arr1 and
+											# another is from arr2
+		# check if i+1 is in the range of our first array A
+		flag = 0
+		if i + 1 < n:
+			sum = A[i + 1] + B[j]
+			# insert (A[i + 1] + B[j], (i + 1, j))
+			# into min heap.
+			temp1 = (i + 1, j)
+
+			# insert only if the pair (i + 1, j) is
+			# not already present inside the set i.e.
+			# no repeating pair should be present inside
+			# the heap.
+			if temp1 not in my_set:
+				heapq.heappush(pq, (sum, temp1))
+				my_set.add(temp1)
+			flag = 1
+		
+		# check if j+1 is in the range of our second array B
+		if j + 1 < len(B):
+			# insert (A[i] + B[j + 1], (i, j + 1))
+			# into min heap.
+			sum = A[i] + B[j + 1]
+			temp1 = (i, j + 1)
+
+			# insert only if the pair (i, j + 1)
+			# is not present inside the heap.
+			if temp1 not in my_set:
+				heapq.heappush(pq, (sum, temp1))
+				my_set.add(temp1)
+			flag = 1
+		if not flag:
+			break
+
+# Driver Code
+A = [1,7,11]
+B = [2,4,6]
+K = 3
+kSmallestPair(A, B, K)
