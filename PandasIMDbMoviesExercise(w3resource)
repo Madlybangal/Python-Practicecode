@@ -1,0 +1,35 @@
+import pandas as pd
+import numpy as np
+import chardet
+# Write a  Python Pandas program to get the columns of the DataFrame 
+# (movies_metadata.csv file).
+df = pd.read_csv("C:/Users/soumy/OneDrive/Documents/PandaExercise/movies_metadata.csv",on_bad_lines='skip',encoding='ISO-8859-1')
+print(df.columns)
+# Write a Pandas program to get the information of the DataFrame 
+# (movies_metadata.csv file)including data types and memory usage
+result=df.info()
+print("result:\n ",result)
+# Write a Pandas program to get the details of the third movie of the DataFrame
+third_movie=df.iloc[2]
+print("third_movie: \n",third_movie)
+#  Write a Pandas program to count the number of rows and columns of the DataFrame
+result=df.shape
+print("Number of rows and columns of the DataFrame:\n ",result)
+#  Write a Pandas program to get the details of the movie with title 'Grumpier Old Men'.
+result = df.loc[(df['title']=='Grumpier Old Men')]
+print("Details of the movie 'Grumpier Old Men:")
+print(result)
+# Write a Pandas program to sort the DataFrame based on release_date.
+small_df = df[['title', 'release_date', 'budget', 'revenue', 'runtime']]
+result=small_df.sort_values('release_date')
+print('Data frame based on release date\n :',result)
+# Write a Pandas program to get the longest runtime and shortest runtime.
+run_time = small_df['runtime']
+print("Longest runtime\n: ",run_time.max())
+print("Shortest runtime\n: ",run_time.min())
+# Write a Pandas program to display the movies (title, number of votes) that received 
+# specified number of votes.
+small_df = df[['title', 'vote_count']]
+n = 500
+result = small_df[small_df['vote_count'] >= n]
+print("List of movies vote count greater than n:\n",result)
