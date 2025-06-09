@@ -1,0 +1,16 @@
+def rob(cashamount):
+    if not cashamount:
+        return 0
+    if len(cashamount) == 1:
+        return cashamount[0]
+    dp=[0] * len(cashamount)
+    dp[0]= cashamount[0]
+    dp[1]= max(cashamount[0], cashamount[1])
+    for i in range(2, len(cashamount)):
+        dp[i] = max(dp[i-1], dp[i-2] + cashamount[i])
+
+    return dp[-1]
+
+
+cashamount_in_houses=[200,700,900,300,100]
+print(rob(cashamount_in_houses))
