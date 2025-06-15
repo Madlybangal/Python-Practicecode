@@ -1,0 +1,22 @@
+def removeKdigits(num: str, k: int) -> str:
+    stack = []
+    
+    for digit in num:
+        # While we can remove digits and the last digit in the stack is greater than the current digit
+        while k > 0 and stack and stack[-1] > digit:
+            stack.pop()
+            k -= 1
+        stack.append(digit)
+    
+    
+    
+    # Convert stack to string and remove leading zeros
+    result = ''.join(stack).lstrip('0')
+    
+    # Return '0' if the result is empty
+    return result if result else '0'
+
+# Example usage
+num = "1432219"
+k = 3
+print(removeKdigits(num, k))  # Output: "1219"
