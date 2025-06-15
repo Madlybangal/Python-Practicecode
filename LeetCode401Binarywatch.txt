@@ -1,0 +1,46 @@
+from typing import List
+
+def get_combinations_sums(leds: List[int], count: int, start: int = 0) -> List[int]:
+    """
+    Recursively generate all sums by turning on `count` LEDs from leds list starting at index `start`.
+    """
+    if count == 0:
+        return [0]
+    sums = []
+    for i in range(start, len(leds) - count + 1):
+        partial_sums = get_combinations_sums(leds, count - 1, i + 1)
+        for s in partial_sums:
+            sums.append(leds[i] + s)
+    return sums
+
+def readBinaryWatch(turnedOn: int) -> List[str]:
+    """
+    Generates all possible times on a binary watch
+    given the number of LEDs that are turned on.
+    
+    Returns:
+        List[str]: All valid time strings formatted as "H:MM".
+    """
+    hour_leds = [8, 4, 2, 1]
+    minute_leds = [32, 16, 8, 4, 2, 1]
+    result = []
+
+    for hour_count in range(max(0, turnedOn - 6), min(turnedOn, 4) + 1):
+        minute_count = turnedOn - hour_count
+        possible_hours = get_combinations_sums(hour_leds, hour_count)
+        possible_minutes = get_combinations_sums(minute_leds, minute_count)
+
+        for h in possible_hours:
+            if 0 <= h <= 11:
+                for m in possible_minutes:
+                    if 0 <= m <= 59:
+                        # Format hour without leading zero, minute always two digits
+                        time_str = f"{h}:{m:02d}"
+                        result.append(time_str)
+
+    return sorted(result)
+
+if __name__ == "__main__":
+    turnedOn_input = 1  # Example input
+    all_times = readBinaryWatch(turnedOn_input)
+    print(all_times)  # Single output list containing all valid times
