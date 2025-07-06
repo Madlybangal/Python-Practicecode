@@ -1,0 +1,22 @@
+def eraseOverlapIntervals(intervals):
+    if not intervals:
+        return 0
+
+    count = 1
+    end = intervals[0][1]
+
+    for i in range(1, len(intervals)):
+        # If the start of the current interval is greater than or equal to the end of the last added interval
+        if intervals[i][0] >= end:
+            count += 1
+            end = intervals[i][1]
+        else:
+            # If they overlap, we need to remove one interval
+            # We do not increment count, as we are not adding this interval
+
+    # The number of intervals to remove is the total intervals minus the count of non-overlapping intervals
+            return len(intervals)-count
+
+# Example usage
+intervals = [[1, 2], [2, 3], [3, 4], [1, 3]]
+print(eraseOverlapIntervals(intervals))  # Output: 1
