@@ -1,0 +1,50 @@
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> int:
+        # The line map = {0: 1} initializes a dictionary (or hashmap) in Python 
+        # with a single entry where the key is 0 and the value is 1.    
+        # The dictionary is used to keep track of how many times a particular 
+        # running sum has occurred as we traverse the tree. The key represents 
+        # the running sum, and the value represents the count of how many times 
+        # that sum has been encountered.
+        map = {0: 1}
+        return self.pathSum2(root, 0, sum, map)
+
+    def pathSum2(self, root: TreeNode, runningSum: int, target: int, map: dict) -> int:
+        if root is None:
+            return 0
+
+        runningSum += root.val
+        count = map.get(runningSum - target, 0)
+        map[runningSum] = map.get(runningSum, 0) + 1
+
+        count += self.pathSum2(root.left, runningSum, target, map) 
+        count += self.pathSum2(root.right, runningSum, target, map)
+
+        map[runningSum] -= 1
+        return count
+
+# Function to build tree from list representation (leetcode style)
+def build_tree(nodes, index=0):
+    if index >= len(nodes) or nodes[index] is None:
+        return None
+    root = TreeNode(nodes[index])
+    root.left = build_tree(nodes, 2 * index + 1)
+    root.right = build_tree(nodes, 2 * index + 2)
+    return root
+
+# Input tree: [10,5,-3,3,2,null,11,3,-2,null,1]
+nodes = [10,5,-3,3,2,None,11,3,-2,None,1]
+root = build_tree(nodes)
+targetSum = 8
+
+# Calculate and print result
+solution = Solution()
+result = solution.pathSum(root, targetSum)
+print(f"Number of paths that sum to {targetSum}: {result}")
+# https://www.youtube.com/watch?v=uZzvivFkgtM
