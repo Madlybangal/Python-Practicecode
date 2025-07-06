@@ -1,0 +1,8 @@
+def count_segments(s: str) -> int:
+    # Split the string by spaces and filter out empty segments
+    segments = s.split()
+    return len(segments)
+
+# Example usage
+input_string = "Hello, my name is John"
+print(count_segments(input_string))  # Output: 5
