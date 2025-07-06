@@ -1,0 +1,36 @@
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
+def insert_level_order(arr, root, i, n):
+    # In the provided implementation, the value of i is incremented implicitly 
+    # through the recursive calls to the insert_level_order function. 
+    # The way the binary tree is constructed from the list is based on the 
+    # properties of a complete binary tree, where the indices of the children of a node can be calculated from the index of the parent node.
+    if i < n:
+        if arr[i] is None:
+            return None
+        root = TreeNode(arr[i])
+        root.left = insert_level_order(arr, root.left, 2 * i + 1, n)
+        root.right = insert_level_order(arr, root.right, 2 * i + 2, n)
+    return root
+
+def construct_binary_tree(arr):
+    print("calling construct")
+    n = len(arr)
+    return insert_level_order(arr, None, 0, n)
+
+def print_tree(node, level=0, prefix="Root: "):
+    if node is not None:
+        print(" " * (level * 4) + prefix + str(node.value))
+        print_tree(node.left, level + 1, "L--- ")
+        print_tree(node.right, level + 1, "R--- ")
+
+# Example usage
+arr = [10, 2, 3, None, 4, 5, None]
+root = construct_binary_tree(arr)
+
+# Print the structure of the constructed tree
+print_tree(root)
