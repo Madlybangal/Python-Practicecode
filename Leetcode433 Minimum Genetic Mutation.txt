@@ -1,0 +1,32 @@
+def min_mutations(startGene, endGene, bank):
+    if endGene not in bank:
+        return -1
+    
+    bank_set = set(bank)
+    queue = [(startGene, 0)]  # (current_gene, mutation_count)
+    visited = set([startGene])
+    
+    while queue:
+        current_gene, mutations = queue.pop(0)
+        
+        if current_gene == endGene:
+            return mutations
+        
+        for i in range(len(current_gene)):
+            for char in 'ACGT':
+                if char != current_gene[i]:
+                    mutated_gene = current_gene[:i] + char + current_gene[i+1:]
+                    if mutated_gene in bank_set and mutated_gene not in visited:
+                        visited.add(mutated_gene)
+                        print("visited:", visited)
+                        queue.append((mutated_gene, mutations + 1))
+    
+    return -1
+
+# Example Usage:
+startGene = "AACCGGTT"
+endGene = "AACCGGTA"
+bank = ["AACCGGTA", "AACCGCTA", "AAACGGTA"]
+
+print(min_mutations(startGene, endGene, bank))  # Output: 1
+# https://www.youtube.com/watch?v=H3kSFSv-t30
